@@ -1,0 +1,27 @@
+{
+  "name": "evoyamwana",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Modern African school management platform.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @evoyamwana/api & npm run dev --workspace @evoyamwana/web",
+    "dev:web": "npm run dev --workspace @evoyamwana/web",
+    "dev:api": "npm run dev --workspace @evoyamwana/api",
+    "dev:mobile": "npm run start --workspace @evoyamwana/mobile",
+    "build": "npm run build --workspace @evoyamwana/shared && npm run build --workspace @evoyamwana/api && npm run build --workspace @evoyamwana/web && npm run build --workspace @evoyamwana/mobile",
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspace @evoyamwana/api",
+    "typecheck": "npm run typecheck --workspaces",
+    "prisma:generate": "npm run prisma:generate --workspace @evoyamwana/api",
+    "prisma:migrate": "npm run prisma:migrate --workspace @evoyamwana/api",
+    "prisma:seed": "npm run prisma:seed --workspace @evoyamwana/api"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

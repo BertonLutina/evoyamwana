@@ -1,0 +1,48 @@
+import { Router } from 'express';
+import authRoutes from './auth.routes.js';
+import { assignmentRoutes, feeRoutes, schoolYearRoutes, subjectRoutes, timetableRoutes } from './academic.routes.js';
+import attendanceRoutes from './attendance.routes.js';
+import chatRoutes from './chat.routes.js';
+import classRoutes from './classes.routes.js';
+import dashboardRoutes from './dashboard.routes.js';
+import directorReportRoutes from './director-reports.routes.js';
+import fileRoutes from './files.routes.js';
+import gradeRoutes from './grades.routes.js';
+import healthRoutes from './health.routes.js';
+import messageRoutes from './messages.routes.js';
+import parentRoutes from './parents.routes.js';
+import paymentRoutes from './payments.routes.js';
+import platformRoutes from './platform.routes.js';
+import schoolHealthRoutes from './school-health.routes.js';
+import sectorDossierRoutes from './sector-dossiers.routes.js';
+import staffUserRoutes from './staff-users.routes.js';
+import studentRoutes from './students.routes.js';
+import teacherRoutes from './teachers.routes.js';
+
+const router = Router();
+
+router.use('/health', healthRoutes);
+router.use('/auth', authRoutes);
+router.use('/students', studentRoutes);
+router.use('/teachers', teacherRoutes);
+router.use('/parents', parentRoutes);
+router.use('/payments', paymentRoutes);
+router.use('/platform', platformRoutes);
+router.use('/classes', classRoutes);
+router.use('/subjects', subjectRoutes);
+router.use('/school-years', schoolYearRoutes);
+router.use('/timetable', timetableRoutes);
+router.use('/assignments', assignmentRoutes);
+router.use('/fees', feeRoutes);
+router.use('/grades', gradeRoutes);
+router.use('/messages', messageRoutes);
+router.use('/attendance', attendanceRoutes);
+router.use('/chat', chatRoutes);
+router.use('/files', fileRoutes);
+router.use('/dashboard', dashboardRoutes);
+router.use('/school-health', schoolHealthRoutes);
+router.use('/sector-dossiers', sectorDossierRoutes);
+router.use('/director-reports', directorReportRoutes);
+router.use('/staff-users', staffUserRoutes);
+
+export default router;

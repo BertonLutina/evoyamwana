@@ -1,0 +1,257 @@
+EVOYAMWANA - LOGINS DEMO
+========================
+
+URL web:
+http://localhost:5174/login
+
+Mot de passe pour tous les comptes seed:
+DemoPass123!
+
+Format:
+role.numero@ecole.evoyamwana.test
+
+Notes:
+- Les comptes SUPER_ADMIN existent par école pour les tests, même si le rôle pilote toute la plateforme.
+- Les rôles DIRECTOR, SECRETARY, ACCOUNTANT, CLASS_TUTOR, DISCIPLINE_OFFICER, LIBRARIAN, NURSE, TRANSPORT_MANAGER et CANTEEN_MANAGER ont 1 compte par école.
+- Les rôles TEACHER ont 5 comptes par école.
+- Les rôles PARENT et STUDENT ont 30 comptes par école.
+
+
+1. EVOYAMWANA Institut Lumumba - Kinshasa
+-----------------------------------------
+Contact école:
+contact@kinshasa-lumumba.evoyamwana.test
+
+SUPER_ADMIN:
+superadmin.01@kinshasa-lumumba.evoyamwana.test
+superadmin.02@kinshasa-lumumba.evoyamwana.test
+superadmin.03@kinshasa-lumumba.evoyamwana.test
+superadmin.04@kinshasa-lumumba.evoyamwana.test
+superadmin.05@kinshasa-lumumba.evoyamwana.test
+
+SCHOOL_ADMIN:
+schooladmin.01@kinshasa-lumumba.evoyamwana.test
+schooladmin.02@kinshasa-lumumba.evoyamwana.test
+schooladmin.03@kinshasa-lumumba.evoyamwana.test
+schooladmin.04@kinshasa-lumumba.evoyamwana.test
+schooladmin.05@kinshasa-lumumba.evoyamwana.test
+schooladmin.06@kinshasa-lumumba.evoyamwana.test
+schooladmin.07@kinshasa-lumumba.evoyamwana.test
+schooladmin.08@kinshasa-lumumba.evoyamwana.test
+schooladmin.09@kinshasa-lumumba.evoyamwana.test
+schooladmin.10@kinshasa-lumumba.evoyamwana.test
+
+DIRECTOR: director.01@kinshasa-lumumba.evoyamwana.test
+SECRETARY: secretary.01@kinshasa-lumumba.evoyamwana.test
+ACCOUNTANT: accountant.01@kinshasa-lumumba.evoyamwana.test
+CLASS_TUTOR: class_tutor.01@kinshasa-lumumba.evoyamwana.test
+DISCIPLINE_OFFICER: discipline_officer.01@kinshasa-lumumba.evoyamwana.test
+LIBRARIAN: librarian.01@kinshasa-lumumba.evoyamwana.test
+NURSE: nurse.01@kinshasa-lumumba.evoyamwana.test
+TRANSPORT_MANAGER: transport_manager.01@kinshasa-lumumba.evoyamwana.test
+CANTEEN_MANAGER: canteen_manager.01@kinshasa-lumumba.evoyamwana.test
+
+TEACHER:
+teacher.01@kinshasa-lumumba.evoyamwana.test
+teacher.02@kinshasa-lumumba.evoyamwana.test
+teacher.03@kinshasa-lumumba.evoyamwana.test
+teacher.04@kinshasa-lumumba.evoyamwana.test
+teacher.05@kinshasa-lumumba.evoyamwana.test
+
+PARENT:
+parent.01@kinshasa-lumumba.evoyamwana.test ... parent.30@kinshasa-lumumba.evoyamwana.test
+
+STUDENT:
+student.01@kinshasa-lumumba.evoyamwana.test ... student.30@kinshasa-lumumba.evoyamwana.test
+
+
+2. EVOYAMWANA Complexe Scolaire Umoja - Lubumbashi
+--------------------------------------------------
+Contact école:
+contact@lubumbashi-umoja.evoyamwana.test
+
+SUPER_ADMIN:
+superadmin.01@lubumbashi-umoja.evoyamwana.test
+superadmin.02@lubumbashi-umoja.evoyamwana.test
+superadmin.03@lubumbashi-umoja.evoyamwana.test
+superadmin.04@lubumbashi-umoja.evoyamwana.test
+superadmin.05@lubumbashi-umoja.evoyamwana.test
+
+SCHOOL_ADMIN:
+schooladmin.01@lubumbashi-umoja.evoyamwana.test
+schooladmin.02@lubumbashi-umoja.evoyamwana.test
+schooladmin.03@lubumbashi-umoja.evoyamwana.test
+schooladmin.04@lubumbashi-umoja.evoyamwana.test
+schooladmin.05@lubumbashi-umoja.evoyamwana.test
+schooladmin.06@lubumbashi-umoja.evoyamwana.test
+schooladmin.07@lubumbashi-umoja.evoyamwana.test
+schooladmin.08@lubumbashi-umoja.evoyamwana.test
+schooladmin.09@lubumbashi-umoja.evoyamwana.test
+schooladmin.10@lubumbashi-umoja.evoyamwana.test
+
+DIRECTOR: director.01@lubumbashi-umoja.evoyamwana.test
+SECRETARY: secretary.01@lubumbashi-umoja.evoyamwana.test
+ACCOUNTANT: accountant.01@lubumbashi-umoja.evoyamwana.test
+CLASS_TUTOR: class_tutor.01@lubumbashi-umoja.evoyamwana.test
+DISCIPLINE_OFFICER: discipline_officer.01@lubumbashi-umoja.evoyamwana.test
+LIBRARIAN: librarian.01@lubumbashi-umoja.evoyamwana.test
+NURSE: nurse.01@lubumbashi-umoja.evoyamwana.test
+TRANSPORT_MANAGER: transport_manager.01@lubumbashi-umoja.evoyamwana.test
+CANTEEN_MANAGER: canteen_manager.01@lubumbashi-umoja.evoyamwana.test
+
+TEACHER:
+teacher.01@lubumbashi-umoja.evoyamwana.test
+teacher.02@lubumbashi-umoja.evoyamwana.test
+teacher.03@lubumbashi-umoja.evoyamwana.test
+teacher.04@lubumbashi-umoja.evoyamwana.test
+teacher.05@lubumbashi-umoja.evoyamwana.test
+
+PARENT:
+parent.01@lubumbashi-umoja.evoyamwana.test ... parent.30@lubumbashi-umoja.evoyamwana.test
+
+STUDENT:
+student.01@lubumbashi-umoja.evoyamwana.test ... student.30@lubumbashi-umoja.evoyamwana.test
+
+
+3. EVOYAMWANA Académie Kasaï - Mbuji-Mayi
+-----------------------------------------
+Contact école:
+contact@mbuji-mayi-kasai.evoyamwana.test
+
+SUPER_ADMIN:
+superadmin.01@mbuji-mayi-kasai.evoyamwana.test
+superadmin.02@mbuji-mayi-kasai.evoyamwana.test
+superadmin.03@mbuji-mayi-kasai.evoyamwana.test
+superadmin.04@mbuji-mayi-kasai.evoyamwana.test
+superadmin.05@mbuji-mayi-kasai.evoyamwana.test
+
+SCHOOL_ADMIN:
+schooladmin.01@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.02@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.03@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.04@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.05@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.06@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.07@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.08@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.09@mbuji-mayi-kasai.evoyamwana.test
+schooladmin.10@mbuji-mayi-kasai.evoyamwana.test
+
+DIRECTOR: director.01@mbuji-mayi-kasai.evoyamwana.test
+SECRETARY: secretary.01@mbuji-mayi-kasai.evoyamwana.test
+ACCOUNTANT: accountant.01@mbuji-mayi-kasai.evoyamwana.test
+CLASS_TUTOR: class_tutor.01@mbuji-mayi-kasai.evoyamwana.test
+DISCIPLINE_OFFICER: discipline_officer.01@mbuji-mayi-kasai.evoyamwana.test
+LIBRARIAN: librarian.01@mbuji-mayi-kasai.evoyamwana.test
+NURSE: nurse.01@mbuji-mayi-kasai.evoyamwana.test
+TRANSPORT_MANAGER: transport_manager.01@mbuji-mayi-kasai.evoyamwana.test
+CANTEEN_MANAGER: canteen_manager.01@mbuji-mayi-kasai.evoyamwana.test
+
+TEACHER:
+teacher.01@mbuji-mayi-kasai.evoyamwana.test
+teacher.02@mbuji-mayi-kasai.evoyamwana.test
+teacher.03@mbuji-mayi-kasai.evoyamwana.test
+teacher.04@mbuji-mayi-kasai.evoyamwana.test
+teacher.05@mbuji-mayi-kasai.evoyamwana.test
+
+PARENT:
+parent.01@mbuji-mayi-kasai.evoyamwana.test ... parent.30@mbuji-mayi-kasai.evoyamwana.test
+
+STUDENT:
+student.01@mbuji-mayi-kasai.evoyamwana.test ... student.30@mbuji-mayi-kasai.evoyamwana.test
+
+
+4. EVOYAMWANA École Amani - Goma
+--------------------------------
+Contact école:
+contact@goma-amani.evoyamwana.test
+
+SUPER_ADMIN:
+superadmin.01@goma-amani.evoyamwana.test
+superadmin.02@goma-amani.evoyamwana.test
+superadmin.03@goma-amani.evoyamwana.test
+superadmin.04@goma-amani.evoyamwana.test
+superadmin.05@goma-amani.evoyamwana.test
+
+SCHOOL_ADMIN:
+schooladmin.01@goma-amani.evoyamwana.test
+schooladmin.02@goma-amani.evoyamwana.test
+schooladmin.03@goma-amani.evoyamwana.test
+schooladmin.04@goma-amani.evoyamwana.test
+schooladmin.05@goma-amani.evoyamwana.test
+schooladmin.06@goma-amani.evoyamwana.test
+schooladmin.07@goma-amani.evoyamwana.test
+schooladmin.08@goma-amani.evoyamwana.test
+schooladmin.09@goma-amani.evoyamwana.test
+schooladmin.10@goma-amani.evoyamwana.test
+
+DIRECTOR: director.01@goma-amani.evoyamwana.test
+SECRETARY: secretary.01@goma-amani.evoyamwana.test
+ACCOUNTANT: accountant.01@goma-amani.evoyamwana.test
+CLASS_TUTOR: class_tutor.01@goma-amani.evoyamwana.test
+DISCIPLINE_OFFICER: discipline_officer.01@goma-amani.evoyamwana.test
+LIBRARIAN: librarian.01@goma-amani.evoyamwana.test
+NURSE: nurse.01@goma-amani.evoyamwana.test
+TRANSPORT_MANAGER: transport_manager.01@goma-amani.evoyamwana.test
+CANTEEN_MANAGER: canteen_manager.01@goma-amani.evoyamwana.test
+
+TEACHER:
+teacher.01@goma-amani.evoyamwana.test
+teacher.02@goma-amani.evoyamwana.test
+teacher.03@goma-amani.evoyamwana.test
+teacher.04@goma-amani.evoyamwana.test
+teacher.05@goma-amani.evoyamwana.test
+
+PARENT:
+parent.01@goma-amani.evoyamwana.test ... parent.30@goma-amani.evoyamwana.test
+
+STUDENT:
+student.01@goma-amani.evoyamwana.test ... student.30@goma-amani.evoyamwana.test
+
+
+5. EVOYAMWANA Lycée Kongo - Matadi
+----------------------------------
+Contact école:
+contact@matadi-kongo.evoyamwana.test
+
+SUPER_ADMIN:
+superadmin.01@matadi-kongo.evoyamwana.test
+superadmin.02@matadi-kongo.evoyamwana.test
+superadmin.03@matadi-kongo.evoyamwana.test
+superadmin.04@matadi-kongo.evoyamwana.test
+superadmin.05@matadi-kongo.evoyamwana.test
+
+SCHOOL_ADMIN:
+schooladmin.01@matadi-kongo.evoyamwana.test
+schooladmin.02@matadi-kongo.evoyamwana.test
+schooladmin.03@matadi-kongo.evoyamwana.test
+schooladmin.04@matadi-kongo.evoyamwana.test
+schooladmin.05@matadi-kongo.evoyamwana.test
+schooladmin.06@matadi-kongo.evoyamwana.test
+schooladmin.07@matadi-kongo.evoyamwana.test
+schooladmin.08@matadi-kongo.evoyamwana.test
+schooladmin.09@matadi-kongo.evoyamwana.test
+schooladmin.10@matadi-kongo.evoyamwana.test
+
+DIRECTOR: director.01@matadi-kongo.evoyamwana.test
+SECRETARY: secretary.01@matadi-kongo.evoyamwana.test
+ACCOUNTANT: accountant.01@matadi-kongo.evoyamwana.test
+CLASS_TUTOR: class_tutor.01@matadi-kongo.evoyamwana.test
+DISCIPLINE_OFFICER: discipline_officer.01@matadi-kongo.evoyamwana.test
+LIBRARIAN: librarian.01@matadi-kongo.evoyamwana.test
+NURSE: nurse.01@matadi-kongo.evoyamwana.test
+TRANSPORT_MANAGER: transport_manager.01@matadi-kongo.evoyamwana.test
+CANTEEN_MANAGER: canteen_manager.01@matadi-kongo.evoyamwana.test
+
+TEACHER:
+teacher.01@matadi-kongo.evoyamwana.test
+teacher.02@matadi-kongo.evoyamwana.test
+teacher.03@matadi-kongo.evoyamwana.test
+teacher.04@matadi-kongo.evoyamwana.test
+teacher.05@matadi-kongo.evoyamwana.test
+
+PARENT:
+parent.01@matadi-kongo.evoyamwana.test ... parent.30@matadi-kongo.evoyamwana.test
+
+STUDENT:
+student.01@matadi-kongo.evoyamwana.test ... student.30@matadi-kongo.evoyamwana.test

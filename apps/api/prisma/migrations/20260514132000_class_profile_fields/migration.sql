@@ -1,0 +1,6 @@
+ALTER TABLE "Class" ADD COLUMN "room" TEXT;
+ALTER TABLE "Class" ADD COLUMN "capacity" INTEGER;
+ALTER TABLE "Class" ADD COLUMN "cycle" TEXT;
+ALTER TABLE "Class" ADD COLUMN "option" TEXT;
+ALTER TABLE "Class" ADD COLUMN "shift" TEXT;
+ALTER TABLE "Class" ADD COLUMN "description" TEXT;

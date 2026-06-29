@@ -1,0 +1,58 @@
+functionsDirectory = "/Users/creaafde/Documents/EVOYAMWANA/evoyamwana/netlify/functions"
+functionsDirectoryOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[build]
+publish = "/Users/creaafde/Documents/EVOYAMWANA/evoyamwana/apps/web/dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run prisma:generate && npm run build --workspace @evoyamwana/shared && npm run build --workspace @evoyamwana/api && npm run build --workspace @evoyamwana/web"
+functions = "/Users/creaafde/Documents/EVOYAMWANA/evoyamwana/netlify/functions"
+
+[build.environment]
+NODE_VERSION = "20"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+included_files = ["apps/api/prisma/schema.prisma", "node_modules/.prisma/client/**"]
+external_node_modules = ["@prisma/client", "bcryptjs", "express", "serverless-http"]
+node_bundler = "esbuild"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/api/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

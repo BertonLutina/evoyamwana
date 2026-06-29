@@ -1,0 +1,1 @@
+{"functions":[{"bundler":"esbuild","buildData":{"runtimeAPIVersion":1},"mainFile":"/Users/creaafde/Documents/EVOYAMWANA/evoyamwana/netlify/functions/api.ts","name":"api","priority":10,"path":"/Users/creaafde/Documents/EVOYAMWANA/evoyamwana/.netlify/functions/api.zip","runtime":"js"}],"system":{"arch":"arm64","platform":"darwin"},"timestamp":1781831765121,"version":1}

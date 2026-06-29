@@ -1,0 +1,23 @@
+[build]
+  command = "npm run prisma:generate && npm run build --workspace @evoyamwana/shared && npm run build --workspace @evoyamwana/api && npm run build --workspace @evoyamwana/web"
+  publish = "apps/web/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client", "bcryptjs", "express", "serverless-http"]
+  included_files = ["apps/api/prisma/schema.prisma", "node_modules/.prisma/client/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

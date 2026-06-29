@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "EVOYAMWANA",
+    "slug": "evoyamwana",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/evoyamwana-logo.png",
+    "scheme": "evoyamwana",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/evoyamwana-logo.png",
+        "backgroundColor": "#164e9f"
+      }
+    },
+    "extra": {
+      "apiUrl": "Use EXPO_PUBLIC_API_URL"
+    }
+  }
+}
