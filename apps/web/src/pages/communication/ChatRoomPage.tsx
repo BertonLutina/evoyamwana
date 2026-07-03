@@ -10,37 +10,37 @@ import { ApiClientError } from '../../services/api';
 import { chatService, type ChatContactDto, type ChatConversationDto } from '../../services/chat.service';
 
 const roleLabels: Record<UserRole, string> = {
-  SUPER_ADMIN: 'Super Admin',
-  SCHOOL_ADMIN: 'School Admin',
-  DIRECTOR: 'Director',
-  SECRETARY: 'Secretary',
-  ACCOUNTANT: 'Accountant',
-  TEACHER: 'Teacher',
-  CLASS_TUTOR: 'Class Tutor',
+  SUPER_ADMIN: 'Super administrateur',
+  SCHOOL_ADMIN: 'Administrateur',
+  DIRECTOR: 'Directeur',
+  SECRETARY: 'Secrétaire',
+  ACCOUNTANT: 'Comptable',
+  TEACHER: 'Enseignant',
+  CLASS_TUTOR: 'Titulaire de classe',
   PARENT: 'Parent',
-  STUDENT: 'Student',
-  DISCIPLINE_OFFICER: 'Discipline Officer',
-  LIBRARIAN: 'Librarian',
-  NURSE: 'Nurse',
-  TRANSPORT_MANAGER: 'Transport Manager',
-  CANTEEN_MANAGER: 'Canteen Manager'
+  STUDENT: 'Élève',
+  DISCIPLINE_OFFICER: 'Responsable discipline',
+  LIBRARIAN: 'Bibliothécaire',
+  NURSE: 'Infirmier(ère)',
+  TRANSPORT_MANAGER: 'Responsable transport',
+  CANTEEN_MANAGER: 'Responsable cantine'
 };
 
 const roleGroups: Array<{ label: string; roles: UserRole[] }> = [
   { label: 'Direction', roles: ['DIRECTOR'] },
   { label: 'Administration', roles: ['SUPER_ADMIN', 'SCHOOL_ADMIN', 'SECRETARY', 'ACCOUNTANT'] },
-  { label: 'Teachers', roles: ['TEACHER', 'CLASS_TUTOR'] },
-  { label: 'Students', roles: ['STUDENT'] },
+  { label: 'Enseignants', roles: ['TEACHER', 'CLASS_TUTOR'] },
+  { label: 'Élèves', roles: ['STUDENT'] },
   { label: 'Parents', roles: ['PARENT'] },
-  { label: 'Health', roles: ['NURSE'] },
+  { label: 'Santé', roles: ['NURSE'] },
   { label: 'Discipline', roles: ['DISCIPLINE_OFFICER'] },
-  { label: 'Library', roles: ['LIBRARIAN'] },
+  { label: 'Bibliothèque', roles: ['LIBRARIAN'] },
   { label: 'Transport', roles: ['TRANSPORT_MANAGER'] },
-  { label: 'Canteen', roles: ['CANTEEN_MANAGER'] }
+  { label: 'Cantine', roles: ['CANTEEN_MANAGER'] }
 ];
 
-const permissionMessage = 'You are not allowed to message this user.';
-const serverMessage = 'A server error occurred. Please try again later.';
+const permissionMessage = 'Vous n’êtes pas autorisé à envoyer un message à cet utilisateur.';
+const serverMessage = 'Une erreur serveur est survenue. Veuillez réessayer plus tard.';
 const initials = (name: string) => name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase();
 const formatChatTime = (value?: string | null) => (value ? new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' }).format(new Date(value)) : '');
 
@@ -82,7 +82,7 @@ export const ChatRoomPage = () => {
         }
       })
       .catch((loadError) => {
-        if (mounted) setError(getChatErrorMessage(loadError, navigate, logout, 'Contacts cannot be loaded.'));
+        if (mounted) setError(getChatErrorMessage(loadError, navigate, logout, 'Impossible de charger les contacts.'));
       })
       .finally(() => {
         if (!mounted) return;
@@ -194,8 +194,8 @@ export const ChatRoomPage = () => {
           <div className="border-b border-ocean/10 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-canopy">ChatRoom</p>
-                <h1 className="font-display text-2xl font-black text-ink">Allowed contacts</h1>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-canopy">Messagerie</p>
+                <h1 className="font-display text-2xl font-black text-ink">Contacts autorisés</h1>
               </div>
               <div className="flex items-center gap-2 text-ink/55">
                 <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-sky" type="button"><Archive size={18} /></button>
@@ -204,14 +204,14 @@ export const ChatRoomPage = () => {
             </div>
             <label className="mt-4 flex h-11 items-center gap-2 rounded-full border border-ocean/10 bg-sky px-4">
               <Search size={18} className="text-ocean/55" />
-              <input className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35" placeholder="Search allowed contacts or conversations" value={search} onChange={(event) => setSearch(event.target.value)} />
+              <input className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35" placeholder="Rechercher un contact ou une conversation" value={search} onChange={(event) => setSearch(event.target.value)} />
             </label>
             <div className="mt-3 flex flex-wrap gap-2">
               {[
-                ['all', 'All'],
-                ['unread', 'Unread'],
-                ['staff', 'School'],
-                ['families', 'Families']
+                ['all', 'Tous'],
+                ['unread', 'Non lus'],
+                ['staff', 'École'],
+                ['families', 'Familles']
               ].map(([value, label]) => (
                 <button key={value} type="button" onClick={() => setFilter(value as typeof filter)} className={`rounded-full border px-4 py-2 text-sm font-black transition ${filter === value ? 'border-canopy/25 bg-canopy/15 text-canopy' : 'border-ocean/10 bg-white text-ink/62 hover:bg-sky'}`}>
                   {label}
@@ -233,16 +233,16 @@ export const ChatRoomPage = () => {
                       <p className="truncate text-sm font-black text-ink">{contact?.fullName ?? 'Conversation'}</p>
                       <span className="shrink-0 text-xs font-semibold text-ink/45">{formatChatTime(lastMessage?.createdAt ?? conversation.updatedAt)}</span>
                     </div>
-                    <p className="mt-1 truncate text-sm text-ink/55">{lastMessage?.body ?? 'No message yet'}</p>
+                    <p className="mt-1 truncate text-sm text-ink/55">{lastMessage?.body ?? 'Aucun message pour le moment'}</p>
                   </div>
                   {conversation.unreadCount ? <span className="grid h-6 min-w-6 place-items-center rounded-full bg-canopy px-2 text-xs font-black text-white">{conversation.unreadCount}</span> : null}
                 </button>
               );
-            }) : <p className="mb-4 rounded-lg bg-sky px-3 py-2 text-sm font-semibold text-ink/55">No conversations yet.</p>}
+            }) : <p className="mb-4 rounded-lg bg-sky px-3 py-2 text-sm font-semibold text-ink/55">Aucune conversation pour le moment.</p>}
 
             <SectionTitle label="Contacts" count={visibleContacts.length} />
             {isLoadingContacts ? <LoadingRows rows={7} /> : error && !contacts.length ? (
-              <EmptyState icon={ShieldAlert} title="Contacts cannot be loaded." description={error} />
+              <EmptyState icon={ShieldAlert} title="Impossible de charger les contacts." description={error} />
             ) : groupedContacts.length ? groupedContacts.map((group) => (
               <div key={group.label} className="mb-4">
                 <button type="button" className="mb-2 flex w-full items-center justify-between rounded-md px-2 py-1 text-left text-xs font-black uppercase tracking-[0.14em] text-ink/45">
@@ -269,7 +269,7 @@ export const ChatRoomPage = () => {
                   })}
                 </div>
               </div>
-            )) : <EmptyState icon={MessageCircle} title="No available contacts for chat." description="The backend did not return any contact you are allowed to message." />}
+            )) : <EmptyState icon={MessageCircle} title="Aucun contact disponible." description="Aucun contact autorisé n'a été trouvé pour la messagerie." />}
           </div>
         </aside>
 
@@ -278,8 +278,8 @@ export const ChatRoomPage = () => {
             <div className="flex min-w-0 items-center gap-3">
               {activeContact ? <Avatar name={activeContact.fullName} /> : <span className="grid h-11 w-11 place-items-center rounded-full bg-sky text-ocean"><UsersRound size={20} /></span>}
               <div className="min-w-0">
-                <p className="truncate text-lg font-black text-ink">{activeContact?.fullName ?? 'Select an allowed contact'}</p>
-                <p className="text-sm font-semibold text-ink/50">{activeContact ? `${roleLabels[activeContact.role]} · allowed by backend` : 'ChatRoom school'}</p>
+                <p className="truncate text-lg font-black text-ink">{activeContact?.fullName ?? 'Choisissez un contact autorisé'}</p>
+                <p className="text-sm font-semibold text-ink/50">{activeContact ? `${roleLabels[activeContact.role]} · contact autorisé` : 'Messagerie de l’école'}</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-ink/65">
@@ -306,13 +306,13 @@ export const ChatRoomPage = () => {
                 })}
                 <div ref={scrollRef} />
               </div>
-            ) : <EmptyState icon={MessageCircle} title={activeContact ? 'No messages yet' : 'Choose an allowed contact'} description={activeContact ? 'Start this conversation only if the backend allows it.' : 'Only contacts returned by the backend are available.'} />}
+            ) : <EmptyState icon={MessageCircle} title={activeContact ? 'Aucun message pour le moment' : 'Choisissez un contact autorisé'} description={activeContact ? 'Démarrez cette conversation.' : 'Seuls les contacts autorisés sont disponibles.'} />}
           </div>
 
           <form onSubmit={sendMessage} className="flex shrink-0 items-center gap-3 border-t border-ocean/10 bg-white p-4">
             <button type="button" className="grid h-11 w-11 place-items-center rounded-full text-ink/55 hover:bg-sky"><Paperclip size={21} /></button>
             <button type="button" className="grid h-11 w-11 place-items-center rounded-full text-ink/55 hover:bg-sky"><Smile size={21} /></button>
-            <input className="h-12 flex-1 rounded-full border border-ocean/10 bg-sky px-5 text-sm outline-none focus:border-ocean disabled:cursor-not-allowed disabled:opacity-60" placeholder={activeContact ? 'Enter a message' : 'Choose an allowed contact'} value={draft} onChange={(event) => setDraft(event.target.value)} disabled={!activeContact || !activeConversation?.id || isCreatingConversation} />
+            <input className="h-12 flex-1 rounded-full border border-ocean/10 bg-sky px-5 text-sm outline-none focus:border-ocean disabled:cursor-not-allowed disabled:opacity-60" placeholder={activeContact ? 'Écrire un message' : 'Choisissez un contact autorisé'} value={draft} onChange={(event) => setDraft(event.target.value)} disabled={!activeContact || !activeConversation?.id || isCreatingConversation} />
             <button type={draft.trim() ? 'submit' : 'button'} disabled={!canSend} className="grid h-12 w-12 place-items-center rounded-full bg-canopy text-white transition hover:bg-canopy/90 disabled:cursor-not-allowed disabled:bg-ink/25">
               {draft.trim() ? <Send size={19} /> : <Mic size={19} />}
             </button>
@@ -388,7 +388,7 @@ const getChatErrorMessage = (error: unknown, navigate: (path: string) => void, l
     if (error.statusCode === 401) {
       logout();
       navigate('/login');
-      return 'Please sign in again.';
+      return 'Veuillez vous reconnecter.';
     }
     if (error.statusCode === 403) return permissionMessage;
     if (error.statusCode >= 500) return serverMessage;
