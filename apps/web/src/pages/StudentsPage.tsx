@@ -10,12 +10,16 @@ import { StudentFormModal } from '../components/StudentFormModal';
 import { studentsService, type StudentFormPayload, type StudentListResponse } from '../services/students.service';
 
 const statusOptions = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-  { label: 'All', value: 'all' }
+  { label: 'Actif', value: 'active' },
+  { label: 'Inactif', value: 'inactive' },
+  { label: 'Tous', value: 'all' }
 ] as const;
 
-const genderOptions = ['', 'Female', 'Male'];
+const genderOptions = [
+  { value: '', label: 'Tous les genres' },
+  { value: 'Female', label: 'Féminin' },
+  { value: 'Male', label: 'Masculin' }
+];
 
 export const StudentsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,7 +43,7 @@ export const StudentsPage = () => {
     try {
       setResult(await studentsService.list(params));
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Unable to load students');
+      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les élèves');
       setResult(null);
     } finally {
       setIsLoading(false);
@@ -83,7 +87,7 @@ export const StudentsPage = () => {
       await studentsService.deactivate(student.id);
       await loadStudents();
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Unable to deactivate student');
+      setError(deleteError instanceof Error ? deleteError.message : 'Impossible de désactiver l’élève');
     }
   };
 
@@ -95,15 +99,15 @@ export const StudentsPage = () => {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Learner records</p>
-            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Students</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Dossiers élèves</p>
+            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Élèves</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">
-              Manage enrollment, class placement, guardians, and student profiles within your school workspace.
+              Gérez les inscriptions, l’affectation aux classes, les responsables et les profils des élèves de votre école.
             </p>
           </div>
           <Button className="gap-2 bg-ocean hover:bg-ink" onClick={() => setIsCreateOpen(true)}>
             <Plus size={18} />
-            Create student
+            Inscrire un élève
           </Button>
         </div>
 
@@ -113,7 +117,7 @@ export const StudentsPage = () => {
               <Search size={18} className="text-ocean/55" />
               <input
                 className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35"
-                placeholder="Search by name or student code"
+                placeholder="Rechercher par nom ou code élève"
                 value={search}
                 onChange={(event) => {
                   setPage(1);
@@ -132,8 +136,8 @@ export const StudentsPage = () => {
                 }}
               >
                 {genderOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option || 'All genders'}
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -170,7 +174,7 @@ export const StudentsPage = () => {
               columns={[
                 {
                   key: 'student',
-                  header: 'Student',
+                  header: 'Élève',
                   render: (student) => (
                     <div className="flex items-center gap-3">
                       <img
@@ -185,19 +189,19 @@ export const StudentsPage = () => {
                     </div>
                   )
                 },
-                { key: 'gender', header: 'Gender', render: (student) => student.gender ?? 'Not set' },
-                { key: 'class', header: 'Class', render: (student) => student.class?.name ?? 'Unassigned' },
+                { key: 'gender', header: 'Genre', render: (student) => student.gender ?? 'Non renseigné' },
+                { key: 'class', header: 'Classe', render: (student) => student.class?.name ?? 'Non assignée' },
                 {
                   key: 'parents',
                   header: 'Parents',
-                  render: (student) => student.parents?.map((item) => `${item.parent.firstName} ${item.parent.lastName}`).join(', ') || 'None'
+                  render: (student) => student.parents?.map((item) => `${item.parent.firstName} ${item.parent.lastName}`).join(', ') || 'Aucun'
                 },
                 {
                   key: 'status',
-                  header: 'Status',
+                  header: 'Statut',
                   render: (student) => (
                     <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${student.isActive ? 'bg-canopy/10 text-canopy' : 'bg-clay/10 text-clay'}`}>
-                      {student.isActive ? 'Active' : 'Inactive'}
+                      {student.isActive ? 'Actif' : 'Inactif'}
                     </span>
                   )
                 },
@@ -206,13 +210,13 @@ export const StudentsPage = () => {
                   header: 'Actions',
                   render: (student) => (
                     <div className="flex justify-end gap-1">
-                      <Link className="grid h-9 w-9 place-items-center rounded-md text-ocean hover:bg-sky" to={`/students/${student.id}`} aria-label="View student">
+                      <Link className="grid h-9 w-9 place-items-center rounded-md text-ocean hover:bg-sky" to={`/students/${student.id}`} aria-label="Voir l’élève">
                         <Eye size={17} />
                       </Link>
-                      <button className="grid h-9 w-9 place-items-center rounded-md text-ember hover:bg-orange-50" onClick={() => setFormStudent(student)} aria-label="Edit student">
+                      <button className="grid h-9 w-9 place-items-center rounded-md text-ember hover:bg-orange-50" onClick={() => setFormStudent(student)} aria-label="Modifier l’élève">
                         <Edit3 size={17} />
                       </button>
-                      <button className="grid h-9 w-9 place-items-center rounded-md text-clay hover:bg-clay/10" onClick={() => void handleDeactivate(student)} aria-label="Deactivate student">
+                      <button className="grid h-9 w-9 place-items-center rounded-md text-clay hover:bg-clay/10" onClick={() => void handleDeactivate(student)} aria-label="Désactiver l’élève">
                         <Trash2 size={17} />
                       </button>
                     </div>
@@ -223,8 +227,8 @@ export const StudentsPage = () => {
           ) : (
             <EmptyState
               icon={GraduationCap}
-              title="No students found"
-              description="Create a student record or adjust the current filters to see matching learners."
+              title="Aucun élève trouvé"
+              description="Créez une fiche élève ou ajustez les filtres actuels pour voir des résultats."
             />
           )}
         </section>
@@ -232,14 +236,14 @@ export const StudentsPage = () => {
         {pagination ? (
           <div className="mt-5 flex flex-col justify-between gap-3 rounded-lg border border-ocean/10 bg-white px-4 py-3 text-sm shadow-panel sm:flex-row sm:items-center">
             <p className="text-ink/60">
-              Page <span className="font-bold text-ink">{pagination.page}</span> of <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} students
+              Page <span className="font-bold text-ink">{pagination.page}</span> sur <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} élèves
             </p>
             <div className="flex gap-2">
               <Button variant="ghost" disabled={page <= 1} onClick={() => setPage((current) => Math.max(current - 1, 1))}>
-                Previous
+                Précédent
               </Button>
               <Button variant="ghost" disabled={page >= pagination.totalPages} onClick={() => setPage((current) => current + 1)}>
-                Next
+                Suivant
               </Button>
             </div>
           </div>

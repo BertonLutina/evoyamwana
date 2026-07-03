@@ -26,7 +26,7 @@ export const ParentsPage = () => {
     try {
       setResult(await parentsService.list(params));
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Unable to load parents');
+      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les parents');
       setResult(null);
     } finally {
       setIsLoading(false);
@@ -58,32 +58,32 @@ export const ParentsPage = () => {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Family network</p>
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Réseau familial</p>
             <h2 className="mt-2 font-display text-4xl font-bold text-ink">Parents</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">
-              Manage parent accounts, phone numbers, household addresses, and the students connected to each family contact.
+              Gérez les comptes parents, les numéros de téléphone, les adresses et les élèves liés à chaque contact familial.
             </p>
           </div>
           <Button className="gap-2 bg-ocean hover:bg-ink" onClick={() => setIsCreateOpen(true)}>
             <Plus size={18} />
-            Add parent
+            Ajouter un parent
           </Button>
         </div>
 
         <section className="mt-6 grid gap-4 md:grid-cols-3">
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <UsersRound className="text-ocean" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Parents in this school</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Parents dans cette école</p>
             <p className="mt-1 text-3xl font-bold text-ink">{pagination?.total ?? parents.length}</p>
           </article>
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <HeartHandshake className="text-ember" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Linked children</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Enfants liés</p>
             <p className="mt-1 text-3xl font-bold text-ink">{linkedChildren}</p>
           </article>
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <Phone className="text-ocean" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Primary contacts</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Contacts principaux</p>
             <p className="mt-1 text-3xl font-bold text-ink">{primaryContacts}</p>
           </article>
         </section>
@@ -93,7 +93,7 @@ export const ParentsPage = () => {
             <Search size={18} className="text-ocean/55" />
             <input
               className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35"
-              placeholder="Search by parent, phone, email, or child"
+              placeholder="Rechercher par parent, téléphone, email ou enfant"
               value={search}
               onChange={(event) => {
                 setPage(1);
@@ -130,38 +130,38 @@ export const ParentsPage = () => {
                     </Link>
                   )
                 },
-                { key: 'phone', header: 'Phone', render: (parent) => parent.phone ?? 'Not set' },
-                { key: 'address', header: 'Address', render: (parent) => parent.address ?? 'Not set' },
+                { key: 'phone', header: 'Téléphone', render: (parent) => parent.phone ?? 'Non renseigné' },
+                { key: 'address', header: 'Adresse', render: (parent) => parent.address ?? 'Non renseignée' },
                 {
                   key: 'children',
-                  header: 'Students',
+                  header: 'Élèves',
                   render: (parent) => parent.children?.length ? (
                     <div className="flex flex-wrap gap-2">
                       {parent.children.map((child) => (
                         <span key={child.student.id} className="rounded-full bg-sky px-2.5 py-1 text-xs font-bold text-ocean">
-                          {child.student.firstName} {child.student.lastName} · {child.student.class?.name ?? 'No class'}
+                          {child.student.firstName} {child.student.lastName} · {child.student.class?.name ?? 'Aucune classe'}
                         </span>
                       ))}
                     </div>
-                  ) : 'No child linked'
+                  ) : 'Aucun enfant lié'
                 },
                 {
                   key: 'relationship',
-                  header: 'Relationship',
-                  render: (parent) => parent.children?.map((child) => child.relationship).join(', ') || 'Guardian'
+                  header: 'Relation',
+                  render: (parent) => parent.children?.map((child) => child.relationship).join(', ') || 'Tuteur'
                 },
                 {
                   key: 'profile',
-                  header: 'Profile',
-                  render: (parent) => <Link className="font-bold text-ocean hover:text-ember" to={`/parents/${parent.id}`}>Open</Link>
+                  header: 'Profil',
+                  render: (parent) => <Link className="font-bold text-ocean hover:text-ember" to={`/parents/${parent.id}`}>Ouvrir</Link>
                 }
               ]}
             />
           ) : (
             <EmptyState
               icon={UsersRound}
-              title="No parents found"
-              description="Add parent contacts, or adjust the search to see linked family accounts."
+              title="Aucun parent trouvé"
+              description="Ajoutez des contacts parents ou ajustez la recherche pour voir les comptes familiaux liés."
             />
           )}
         </section>
@@ -169,14 +169,14 @@ export const ParentsPage = () => {
         {pagination ? (
           <div className="mt-5 flex flex-col justify-between gap-3 rounded-lg border border-ocean/10 bg-white px-4 py-3 text-sm shadow-panel sm:flex-row sm:items-center">
             <p className="text-ink/60">
-              Page <span className="font-bold text-ink">{pagination.page}</span> of <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} parents
+              Page <span className="font-bold text-ink">{pagination.page}</span> sur <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} parents
             </p>
             <div className="flex gap-2">
               <Button variant="ghost" disabled={page <= 1} onClick={() => setPage((current) => Math.max(current - 1, 1))}>
-                Previous
+                Précédent
               </Button>
               <Button variant="ghost" disabled={page >= pagination.totalPages} onClick={() => setPage((current) => current + 1)}>
-                Next
+                Suivant
               </Button>
             </div>
           </div>

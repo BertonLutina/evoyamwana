@@ -27,7 +27,7 @@ export const TeachersPage = () => {
     try {
       setResult(await teachersService.list(params));
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Unable to load teachers');
+      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les enseignants');
       setResult(null);
     } finally {
       setIsLoading(false);
@@ -75,32 +75,32 @@ export const TeachersPage = () => {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Teaching staff</p>
-            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Teachers</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Personnel enseignant</p>
+            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Enseignants</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">
-              Manage school teachers, employee numbers, class assignments, and subject loads from the shared API.
+              Gérez les enseignants, les matricules, l'affectation aux classes et les matières enseignées.
             </p>
           </div>
           <Button className="gap-2 bg-ocean hover:bg-ink" onClick={() => setIsCreateOpen(true)}>
             <Plus size={18} />
-            Add teacher
+            Ajouter un enseignant
           </Button>
         </div>
 
         <section className="mt-6 grid gap-4 md:grid-cols-3">
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <UserRoundCheck className="text-ocean" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Teachers in this school</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Enseignants dans cette école</p>
             <p className="mt-1 text-3xl font-bold text-ink">{pagination?.total ?? teachers.length}</p>
           </article>
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <GraduationCap className="text-ember" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Assigned classes</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Classes affectées</p>
             <p className="mt-1 text-3xl font-bold text-ink">{totalClasses}</p>
           </article>
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
             <BookOpen className="text-ocean" size={22} />
-            <p className="mt-4 text-sm font-semibold text-ink/55">Subject loads</p>
+            <p className="mt-4 text-sm font-semibold text-ink/55">Matières enseignées</p>
             <p className="mt-1 text-3xl font-bold text-ink">{totalSubjects}</p>
           </article>
         </section>
@@ -110,7 +110,7 @@ export const TeachersPage = () => {
             <Search size={18} className="text-ocean/55" />
             <input
               className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35"
-              placeholder="Search by name, email, or employee number"
+              placeholder="Rechercher par nom, email ou matricule"
               value={search}
               onChange={(event) => {
                 setPage(1);
@@ -134,7 +134,7 @@ export const TeachersPage = () => {
               columns={[
                 {
                   key: 'teacher',
-                  header: 'Teacher',
+                  header: 'Enseignant',
                   render: (teacher) => (
                     <Link to={`/teachers/${teacher.id}`} className="flex items-center gap-3 rounded-md transition hover:text-ocean">
                       <span className="grid h-10 w-10 place-items-center rounded-md bg-ocean text-sm font-black text-white">
@@ -147,10 +147,10 @@ export const TeachersPage = () => {
                     </Link>
                   )
                 },
-                { key: 'employeeNumber', header: 'Employee No.', render: (teacher) => teacher.employeeNumber },
-                { key: 'phone', header: 'Phone', render: (teacher) => teacher.phone ?? 'Not set' },
-                { key: 'classes', header: 'Classes', render: (teacher) => teacher.classes?.map((item) => item.name).join(', ') || 'Unassigned' },
-                { key: 'subjects', header: 'Subjects', render: (teacher) => teacher.subjects?.map((item) => item.name).join(', ') || 'No subject' },
+                { key: 'employeeNumber', header: 'Matricule', render: (teacher) => teacher.employeeNumber },
+                { key: 'phone', header: 'Téléphone', render: (teacher) => teacher.phone ?? 'Non renseigné' },
+                { key: 'classes', header: 'Classes', render: (teacher) => teacher.classes?.map((item) => item.name).join(', ') || 'Non assignée' },
+                { key: 'subjects', header: 'Matières', render: (teacher) => teacher.subjects?.map((item) => item.name).join(', ') || 'Aucune matière' },
                 {
                   key: 'actions',
                   header: 'Actions',
@@ -172,8 +172,8 @@ export const TeachersPage = () => {
           ) : (
             <EmptyState
               icon={UserRoundCheck}
-              title="No teachers found"
-              description="Add teachers for this school, or adjust the search to see existing staff."
+              title="Aucun enseignant trouvé"
+              description="Ajoutez des enseignants pour cette école ou ajustez la recherche pour voir le personnel existant."
             />
           )}
         </section>
@@ -181,14 +181,14 @@ export const TeachersPage = () => {
         {pagination ? (
           <div className="mt-5 flex flex-col justify-between gap-3 rounded-lg border border-ocean/10 bg-white px-4 py-3 text-sm shadow-panel sm:flex-row sm:items-center">
             <p className="text-ink/60">
-              Page <span className="font-bold text-ink">{pagination.page}</span> of <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} teachers
+              Page <span className="font-bold text-ink">{pagination.page}</span> sur <span className="font-bold text-ink">{pagination.totalPages}</span> · {pagination.total} enseignants
             </p>
             <div className="flex gap-2">
               <Button variant="ghost" disabled={page <= 1} onClick={() => setPage((current) => Math.max(current - 1, 1))}>
-                Previous
+                Précédent
               </Button>
               <Button variant="ghost" disabled={page >= pagination.totalPages} onClick={() => setPage((current) => current + 1)}>
-                Next
+                Suivant
               </Button>
             </div>
           </div>

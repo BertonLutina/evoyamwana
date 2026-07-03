@@ -13,10 +13,10 @@ import { classesService } from '../services/classes.service';
 import { offlineAttendanceService } from '../services/offlineAttendance.service';
 
 const statuses: Array<{ value: AttendanceStatus; label: string; className: string }> = [
-  { value: 'PRESENT', label: 'Present', className: 'bg-canopy text-white' },
+  { value: 'PRESENT', label: 'Présent', className: 'bg-canopy text-white' },
   { value: 'ABSENT', label: 'Absent', className: 'bg-clay text-white' },
-  { value: 'LATE', label: 'Late', className: 'bg-ember text-white' },
-  { value: 'EXCUSED', label: 'Excused', className: 'bg-ocean text-white' }
+  { value: 'LATE', label: 'Retard', className: 'bg-ember text-white' },
+  { value: 'EXCUSED', label: 'Excusé', className: 'bg-ocean text-white' }
 ];
 
 const today = new Date().toISOString().slice(0, 10);
@@ -45,7 +45,7 @@ export const AttendancePage = () => {
         setClassId((current) => current || data.classes[0]?.id || '');
       })
       .catch((error) => {
-        setMessage(error instanceof Error ? error.message : 'Unable to load classes.');
+        setMessage(error instanceof Error ? error.message : 'Impossible de charger les classes.');
       })
       .finally(() => setIsClassLoading(false));
   }, []);
@@ -75,7 +75,7 @@ export const AttendancePage = () => {
         if (isMounted) {
           setStudents([]);
           setRecords({});
-          setMessage(error instanceof Error ? error.message : 'Unable to load the class register.');
+          setMessage(error instanceof Error ? error.message : 'Impossible de charger le registre de la classe.');
         }
       })
       .finally(() => {
@@ -109,7 +109,7 @@ export const AttendancePage = () => {
 
   const saveAttendance = async () => {
     if (!classId || !students.length) {
-      setMessage('Load a class register before saving attendance.');
+      setMessage('Chargez le registre d’une classe avant d’enregistrer les présences.');
       return;
     }
     setIsSaving(true);
@@ -123,11 +123,11 @@ export const AttendancePage = () => {
       setPendingCount(result.pendingCount);
       setMessage(
         result.mode === 'online'
-          ? 'Attendance saved and parent notifications queued for absence or lateness.'
+          ? 'Présences enregistrées et notifications envoyées aux parents en cas d’absence ou de retard.'
           : 'Connexion faible : registre gardé localement. Il sera synchronisé dès que le réseau revient.'
       );
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Unable to save attendance. Demo rows remain editable.');
+      setMessage(error instanceof Error ? error.message : 'Impossible d’enregistrer les présences.');
     } finally {
       setIsSaving(false);
     }
@@ -152,15 +152,15 @@ export const AttendancePage = () => {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Daily register</p>
-            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Attendance</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Registre journalier</p>
+            <h2 className="mt-2 font-display text-4xl font-bold text-ink">Présences</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">
-              Sélectionnez une classe et une date pour charger la liste depuis l’API, marquer rapidement chaque élève, puis enregistrer les présences.
+              Sélectionnez une classe et une date pour charger la liste, marquer rapidement chaque élève, puis enregistrer les présences.
             </p>
           </div>
           <Button className="gap-2 bg-ocean hover:bg-ink" onClick={() => void saveAttendance()} disabled={isSaving}>
             <Save size={18} />
-            {isSaving ? 'Saving...' : 'Save attendance'}
+            {isSaving ? 'Enregistrement...' : 'Enregistrer les présences'}
           </Button>
         </div>
 
@@ -169,10 +169,10 @@ export const AttendancePage = () => {
         </div>
 
         <section className="mt-6 grid gap-4 md:grid-cols-4">
-          <StatCard label="Present" value={String(summary.PRESENT)} icon={Check} tone="green" detail="Marked today" />
-          <StatCard label="Absent" value={String(summary.ABSENT)} icon={ShieldAlert} tone="clay" detail="Notify parents" />
-          <StatCard label="Late" value={String(summary.LATE)} icon={Clock} tone="orange" detail="Needs follow-up" />
-          <StatCard label="Excused" value={String(summary.EXCUSED)} icon={MinusCircle} tone="blue" detail="Approved" />
+          <StatCard label="Présents" value={String(summary.PRESENT)} icon={Check} tone="green" detail="Marqués aujourd'hui" />
+          <StatCard label="Absents" value={String(summary.ABSENT)} icon={ShieldAlert} tone="clay" detail="Notifier les parents" />
+          <StatCard label="Retards" value={String(summary.LATE)} icon={Clock} tone="orange" detail="À suivre" />
+          <StatCard label="Excusés" value={String(summary.EXCUSED)} icon={MinusCircle} tone="blue" detail="Approuvés" />
         </section>
 
         <section className="mt-6 rounded-lg border border-ocean/10 bg-white p-4 shadow-panel">
@@ -181,7 +181,7 @@ export const AttendancePage = () => {
               className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold outline-none focus:border-ocean"
               value={classId}
               onChange={(event) => setClassId(event.target.value)}
-              aria-label="Class"
+              aria-label="Classe"
               disabled={isClassLoading}
             >
               <option value="">{isClassLoading ? 'Chargement des classes...' : 'Sélectionner une classe'}</option>
@@ -194,13 +194,13 @@ export const AttendancePage = () => {
             <input className="h-11 rounded-md border border-ocean/10 px-3 text-sm outline-none focus:border-ocean" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
             <label className="flex h-11 items-center gap-2 rounded-md border border-ocean/10 bg-sky px-3">
               <Search size={18} className="text-ocean/55" />
-              <input className="w-full bg-transparent text-sm outline-none" placeholder="Search register" value={search} onChange={(event) => setSearch(event.target.value)} />
+              <input className="w-full bg-transparent text-sm outline-none" placeholder="Rechercher dans le registre" value={search} onChange={(event) => setSearch(event.target.value)} />
             </label>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {statuses.map((status) => (
               <button key={status.value} className={`rounded-md px-3 py-2 text-xs font-bold ${status.className}`} onClick={() => markAll(status.value)}>
-                Mark all {status.label}
+                Tout marquer {status.label}
               </button>
             ))}
           </div>
@@ -216,7 +216,7 @@ export const AttendancePage = () => {
               columns={[
                 {
                   key: 'student',
-                  header: 'Student',
+                  header: 'Élève',
                   render: (student) => (
                     <div>
                       <p className="font-bold">{student.firstName} {student.lastName}</p>
@@ -224,10 +224,10 @@ export const AttendancePage = () => {
                     </div>
                   )
                 },
-                { key: 'class', header: 'Class', render: (student) => student.class?.name ?? 'Unassigned' },
+                { key: 'class', header: 'Classe', render: (student) => student.class?.name ?? 'Non assignée' },
                 {
                   key: 'status',
-                  header: 'Status',
+                  header: 'Statut',
                   render: (student) => (
                     <div className="flex flex-wrap gap-1">
                       {statuses.map((status) => (
@@ -247,18 +247,18 @@ export const AttendancePage = () => {
               ]}
             />
           ) : (
-            <EmptyState icon={CalendarCheck} title="No learners in this register" description="Enter a class ID with active students or adjust your search." />
+            <EmptyState icon={CalendarCheck} title="Aucun élève dans ce registre" description="Sélectionnez une classe avec des élèves actifs ou ajustez votre recherche." />
           )}
         </section>
 
         <section className="mt-6 grid gap-5 lg:grid-cols-2">
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
-            <h3 className="flex items-center gap-2 text-xl font-bold"><FileText className="text-ember" size={20} /> Attendance history</h3>
-            <p className="mt-3 text-sm leading-6 text-ink/60">History is available through `GET /attendance/student/:studentId` for admins, assigned teachers, and parents viewing their children.</p>
+            <h3 className="flex items-center gap-2 text-xl font-bold"><FileText className="text-ember" size={20} /> Historique des présences</h3>
+            <p className="mt-3 text-sm leading-6 text-ink/60">L'historique est consultable par les administrateurs, les enseignants assignés et les parents pour leurs enfants.</p>
           </article>
           <article className="rounded-lg border border-ocean/10 bg-white p-5 shadow-panel">
-            <h3 className="flex items-center gap-2 text-xl font-bold"><CalendarCheck className="text-ocean" size={20} /> Daily reports</h3>
-            <p className="mt-3 text-sm leading-6 text-ink/60">School admins can fetch daily totals from `GET /attendance/reports/daily?date=YYYY-MM-DD`.</p>
+            <h3 className="flex items-center gap-2 text-xl font-bold"><CalendarCheck className="text-ocean" size={20} /> Rapports journaliers</h3>
+            <p className="mt-3 text-sm leading-6 text-ink/60">Les administrateurs peuvent consulter les totaux journaliers de présence par date.</p>
           </article>
         </section>
       </div>
