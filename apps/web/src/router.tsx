@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from './layouts/AppLayout';
 import { AuthLayout } from './layouts/AuthLayout';
 import { Dashboard } from './pages/Dashboard';
+import { AdminSettingsPage } from './pages/AdminSettingsPage';
 import { AcademicModulePage } from './pages/AcademicModulePage';
 import { ClassDetailsPage } from './pages/ClassDetailsPage';
 import { AttendancePage } from './pages/AttendancePage';
@@ -99,7 +100,7 @@ export const router = createBrowserRouter([
         element: (
           <RoleAwarePage
             workspace="payments"
-            admin={<PlaceholderPage title="Payments" description="Invoices, partial payments, receipts, and overdue balances will appear here." />}
+            admin={<AccountantPaymentsPage />}
             director={<AccountantPaymentsPage />}
             secretary={<StaffUnavailablePage role="SECRETARY" title="Paiements" description="La phase 1 secrétariat garde cette section séparée sans exposer un workflow comptable." />}
             accountant={<AccountantPaymentsPage />}
@@ -117,7 +118,7 @@ export const router = createBrowserRouter([
         element: (
           <RoleAwarePage
             workspace="settings"
-            admin={<PlaceholderPage title="Settings" description="School profile, academic terms, roles, and workspace preferences will appear here." />}
+            admin={<AdminSettingsPage />}
             superAdmin={<SuperAdminSettingsPage />}
             director={<StaffProfilePage role="DIRECTOR" />}
             secretary={<StaffProfilePage role="SECRETARY" />}
