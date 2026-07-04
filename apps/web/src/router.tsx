@@ -73,18 +73,81 @@ export const router = createBrowserRouter([
       { path: '/timetable', element: <AcademicModulePage kind="timetable" /> },
       { path: '/assignments', element: <AcademicModulePage kind="assignments" /> },
       { path: '/fees', element: <AcademicModulePage kind="fees" /> },
-      { path: '/sectors', element: <RoleAwarePage workspace="settings" director={<DirectorSectorsPage />} admin={<PlaceholderPage title="Secteurs & dossiers" description="Vue direction réservée au pilotage des secteurs." />} /> },
-      { path: '/school-health', element: <RoleAwarePage workspace="settings" director={<DirectorSchoolHealthPage />} admin={<PlaceholderPage title="Santé de l’école" description="Vue direction réservée au pilotage santé de l’école." />} /> },
+      { path: '/sectors', element: <RoleAwarePage workspace="settings" director={<DirectorSectorsPage />} admin={<DirectorSectorsPage />} /> },
+      { path: '/school-health', element: <RoleAwarePage workspace="settings" director={<DirectorSchoolHealthPage />} admin={<DirectorSchoolHealthPage />} /> },
       { path: '/pedagogy-quality', element: <RoleAwarePage workspace="settings" director={<DirectorPedagogyQualityPage />} /> },
       { path: '/official-exams', element: <RoleAwarePage workspace="settings" director={<DirectorOfficialExamsPage />} /> },
-      { path: '/infrastructure', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Infrastructures" description="Salles, bancs, eau, électricité, toilettes, sécurité, internet et équipements scolaires." />} /> },
-      { path: '/risks', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Risques & urgences" description="Incidents critiques, sécurité, santé scolaire, discipline grave et actions urgentes de direction." />} /> },
-      { path: '/reputation', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Réputation école" description="Satisfaction parents, résultats, incidents, reconnaissance locale et image publique de l’école." />} /> },
-      { path: '/partners', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Partenaires & sponsors" description="Contrats sponsors, collaborations, montants et échéances seront gérés ici." />} /> },
-      { path: '/ministry-compliance', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Conformité ministère" description="Agréments, inspections, PROVED, Sous-PROVED et documents officiels seront suivis ici." />} /> },
-      { path: '/official-documents', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Documents officiels" description="Agréments, autorisations, attestations, rapports d’inspection et archives de direction." />} /> },
-      { path: '/meetings', element: <RoleAwarePage workspace="settings" director={<PlaceholderPage title="Réunions & décisions" description="Conseils de direction, décisions prises, tâches assignées et suivi des responsabilités." />} /> },
-      { path: '/reports', element: <RoleAwarePage workspace="settings" director={<DirectorReportsPage />} admin={<PlaceholderPage title="Rapports direction" description="Vue direction réservée aux synthèses de pilotage." />} /> },
+      {
+        path: '/infrastructure',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorSchoolHealthPage fixedCategory="INFRASTRUCTURE" eyebrow="Infrastructures" title="Infrastructures" description="Salles, bancs, eau, électricité, toilettes, sécurité, internet et équipements scolaires." />}
+            admin={<DirectorSchoolHealthPage fixedCategory="INFRASTRUCTURE" eyebrow="Infrastructures" title="Infrastructures" description="Salles, bancs, eau, électricité, toilettes, sécurité, internet et équipements scolaires." />}
+          />
+        )
+      },
+      {
+        path: '/risks',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorSchoolHealthPage fixedCategory="SAFETY" eyebrow="Risques & urgences" title="Risques & urgences" description="Incidents critiques, sécurité, santé scolaire, discipline grave et actions urgentes de direction." />}
+            admin={<DirectorSchoolHealthPage fixedCategory="SAFETY" eyebrow="Risques & urgences" title="Risques & urgences" description="Incidents critiques, sécurité, santé scolaire, discipline grave et actions urgentes de direction." />}
+          />
+        )
+      },
+      {
+        path: '/reputation',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorSchoolHealthPage fixedCategory="REPUTATION" eyebrow="Réputation école" title="Réputation école" description="Satisfaction parents, résultats, incidents, reconnaissance locale et image publique de l’école." />}
+            admin={<DirectorSchoolHealthPage fixedCategory="REPUTATION" eyebrow="Réputation école" title="Réputation école" description="Satisfaction parents, résultats, incidents, reconnaissance locale et image publique de l’école." />}
+          />
+        )
+      },
+      {
+        path: '/partners',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorReportsPage fixedType="PARTNERSHIP" eyebrow="Partenaires & sponsors" title="Partenaires & sponsors" description="Contrats sponsors, collaborations, montants et échéances." />}
+            admin={<DirectorReportsPage fixedType="PARTNERSHIP" eyebrow="Partenaires & sponsors" title="Partenaires & sponsors" description="Contrats sponsors, collaborations, montants et échéances." />}
+          />
+        )
+      },
+      {
+        path: '/ministry-compliance',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorReportsPage fixedType="COMPLIANCE" eyebrow="Conformité ministère" title="Conformité ministère" description="Agréments, inspections, PROVED, Sous-PROVED et documents officiels." />}
+            admin={<DirectorReportsPage fixedType="COMPLIANCE" eyebrow="Conformité ministère" title="Conformité ministère" description="Agréments, inspections, PROVED, Sous-PROVED et documents officiels." />}
+          />
+        )
+      },
+      {
+        path: '/official-documents',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorReportsPage eyebrow="Documents officiels" title="Documents officiels" description="Agréments, autorisations, attestations, rapports d’inspection et archives de direction." />}
+            admin={<DirectorReportsPage eyebrow="Documents officiels" title="Documents officiels" description="Agréments, autorisations, attestations, rapports d’inspection et archives de direction." />}
+          />
+        )
+      },
+      {
+        path: '/meetings',
+        element: (
+          <RoleAwarePage
+            workspace="settings"
+            director={<DirectorReportsPage fixedType="MEETING" eyebrow="Réunions & décisions" title="Réunions & décisions" description="Conseils de direction, décisions prises, tâches assignées et suivi des responsabilités." />}
+            admin={<DirectorReportsPage fixedType="MEETING" eyebrow="Réunions & décisions" title="Réunions & décisions" description="Conseils de direction, décisions prises, tâches assignées et suivi des responsabilités." />}
+          />
+        )
+      },
+      { path: '/reports', element: <RoleAwarePage workspace="settings" director={<DirectorReportsPage />} admin={<DirectorReportsPage />} /> },
       { path: '/students', element: <RoleAwarePage workspace="students" admin={<StudentsPage />} superAdmin={<SuperAdminUsersPage />} director={<StaffStudentsPage role="DIRECTOR" />} secretary={<StaffStudentsPage role="SECRETARY" />} accountant={<StaffUnavailablePage role="ACCOUNTANT" title="Élèves" description="Le comptable consulte les familles depuis l’espace paiements." />} classTutor={<StaffUnavailablePage role="CLASS_TUTOR" title="Élèves" description="Le titulaire consulte les élèves depuis sa classe et les présences." />} parent={<ParentChildrenPage />} discipline={<StaffStudentsPage role="DISCIPLINE_OFFICER" />} librarian={<StaffStudentsPage role="LIBRARIAN" />} nurse={<StaffStudentsPage role="NURSE" />} transport={<StaffStudentsPage role="TRANSPORT_MANAGER" />} canteen={<StaffStudentsPage role="CANTEEN_MANAGER" />} /> },
       { path: '/students/:id', element: <StudentDetailsPage /> },
       { path: '/teachers', element: <RoleAwarePage workspace="teachers" admin={<TeachersPage />} superAdmin={<SuperAdminAdminsPage />} director={<StaffTeachersPage role="DIRECTOR" />} secretary={<StaffTeachersPage role="SECRETARY" />} classTutor={<StaffUnavailablePage role="CLASS_TUTOR" title="Enseignants" description="Le titulaire utilise son espace pédagogique et son profil enseignant." />} /> },
