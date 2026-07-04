@@ -12,6 +12,7 @@ import healthRoutes from './health.routes.js';
 import messageRoutes from './messages.routes.js';
 import parentRoutes from './parents.routes.js';
 import paymentRoutes from './payments.routes.js';
+import planningRoutes from './planning.routes.js';
 import platformRoutes from './platform.routes.js';
 import schoolHealthRoutes from './school-health.routes.js';
 import sectorDossierRoutes from './sector-dossiers.routes.js';
@@ -44,5 +45,6 @@ router.use('/school-health', schoolHealthRoutes);
 router.use('/sector-dossiers', sectorDossierRoutes);
 router.use('/director-reports', directorReportRoutes);
 router.use('/staff-users', staffUserRoutes);
+router.use('/planning', planningRoutes);
 
 export default router;
