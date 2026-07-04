@@ -6,7 +6,7 @@ import type { DashboardPageProps } from './types';
 
 interface RoleCard {
   label: string;
-  value: (props: DashboardPageProps) => string | number;
+  value: (props: Pick<DashboardPageProps, 'user' | 'summary' | 'isLoading' | 'error' | 'navigate'>) => string | number;
   icon: LucideIcon;
   tone: 'blue' | 'orange' | 'green' | 'gold' | 'clay';
   detail: string;

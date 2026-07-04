@@ -1,17 +1,7 @@
 import { Bell, Building2, UserRoundCheck } from 'lucide-react';
-import WeekCalendar, { type CalendarEvent } from '../../components/WeekCalendar';
+import WeekCalendar from '../../components/WeekCalendar';
 import { PersonalDashboardShell } from './PersonalDashboardShell';
 import type { DashboardPageProps } from './types';
-
-function superWeekEvents(): CalendarEvent[] {
-  const d = new Date(); const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); d.setHours(0, 0, 0, 0);
-  const titles = ['Audit écoles', 'Revue admins', 'Support plateforme', 'Analyse adoption', 'Rapport hebdo'];
-  return Array.from({ length: 5 }, (_, i) => {
-    const date = new Date(d); date.setDate(d.getDate() + i);
-    return { id: `super-d${i}`, title: titles[i], subtitle: 'Super Admin', date, startMinutes: 8 * 60, endMinutes: 9 * 60, status: 'confirmed' as const };
-  });
-}
 
 export const SuperAdminDashboard = (props: DashboardPageProps) => (
   <PersonalDashboardShell
@@ -35,8 +25,8 @@ export const SuperAdminDashboard = (props: DashboardPageProps) => (
     ]}
     footer={
       <WeekCalendar
-        events={superWeekEvents()}
-        onEventClick={() => props.navigate('/classes')}
+        events={props.planningEvents}
+        onEventClick={() => props.navigate('/planning')}
       />
     }
   />

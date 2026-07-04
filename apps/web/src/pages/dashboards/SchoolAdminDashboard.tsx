@@ -5,24 +5,14 @@ import { EmptyState } from '../../components/EmptyState';
 import { LoadingRows } from '../../components/LoadingRows';
 import { ResponsiveTable } from '../../components/ResponsiveTable';
 import { StatCard } from '../../components/StatCard';
-import WeekCalendar, { type CalendarEvent } from '../../components/WeekCalendar';
+import WeekCalendar from '../../components/WeekCalendar';
 import { useLocale } from '../../contexts/LocaleContext';
 import type { DashboardPageProps } from './types';
-
-function adminWeekEvents(): CalendarEvent[] {
-  const d = new Date(); const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); d.setHours(0, 0, 0, 0);
-  const titles = ['Inscription élèves', 'Paiements du jour', 'Messages parents', 'Suivi présences', 'Rapport hebdo'];
-  return Array.from({ length: 5 }, (_, i) => {
-    const date = new Date(d); date.setDate(d.getDate() + i);
-    return { id: `admin-d${i}`, title: titles[i], subtitle: 'Administration', date, startMinutes: 8 * 60, endMinutes: 9 * 60, status: i === 3 ? 'in_review' : 'confirmed' };
-  });
-}
 
 const today = new Date().toISOString().slice(0, 10);
 const formatDate = (value: string) => new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(new Date(value));
 
-export const SchoolAdminDashboard = ({ summary, isLoading, error, navigate, user }: DashboardPageProps) => {
+export const SchoolAdminDashboard = ({ summary, isLoading, error, navigate, user, planningEvents }: DashboardPageProps) => {
   const { t } = useLocale();
   const attendanceRows = useMemo(
     () => [
@@ -33,8 +23,6 @@ export const SchoolAdminDashboard = ({ summary, isLoading, error, navigate, user
     ],
     [summary.attendance]
   );
-
-  const adminCalEvents = useMemo(adminWeekEvents, []);
 
   const quickActions = [
     { label: t('dashboard.registerStudent'), path: '/students?action=create' },
@@ -209,11 +197,11 @@ export const SchoolAdminDashboard = ({ summary, isLoading, error, navigate, user
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-ocean">Planning administration</p>
               <h3 className="mt-1 text-xl font-bold text-ink">Calendrier de la semaine</h3>
             </div>
-            <Button variant="ghost" className="text-ocean" onClick={() => navigate('/attendance')}>Voir présences</Button>
+            <Button variant="ghost" className="text-ocean" onClick={() => navigate('/planning')}>Voir le planning</Button>
           </div>
           <WeekCalendar
-            events={adminCalEvents}
-            onEventClick={() => navigate('/attendance')}
+            events={planningEvents}
+            onEventClick={() => navigate('/planning')}
           />
         </section>
       </div>

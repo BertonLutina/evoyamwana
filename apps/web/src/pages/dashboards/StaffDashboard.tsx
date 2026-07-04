@@ -1,17 +1,8 @@
 import type { UserRole } from '@evoyamwana/shared';
 import { BookOpen, GraduationCap, MessageSquare } from 'lucide-react';
-import WeekCalendar, { type CalendarEvent } from '../../components/WeekCalendar';
+import WeekCalendar from '../../components/WeekCalendar';
 import { PersonalDashboardShell } from './PersonalDashboardShell';
 import type { DashboardPageProps } from './types';
-
-function staffWeekEvents(label: string): CalendarEvent[] {
-  const d = new Date(); const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); d.setHours(0, 0, 0, 0);
-  return Array.from({ length: 5 }, (_, i) => {
-    const date = new Date(d); date.setDate(d.getDate() + i);
-    return { id: `staff-d${i}`, title: label, subtitle: 'Planning semaine', date, startMinutes: 8 * 60, endMinutes: 9 * 60, status: 'available' as const };
-  });
-}
 
 interface StaffConfig {
   eyebrow: string;
@@ -175,8 +166,8 @@ export const StaffDashboard = (props: DashboardPageProps) => {
       focus={config.focus}
       footer={
         <WeekCalendar
-          events={staffWeekEvents(config.eyebrow)}
-          onEventClick={() => props.navigate(config.primaryPath)}
+          events={props.planningEvents}
+          onEventClick={() => props.navigate('/planning')}
         />
       }
     />

@@ -1,17 +1,7 @@
 import { Bell, CreditCard, GraduationCap } from 'lucide-react';
-import WeekCalendar, { type CalendarEvent } from '../../components/WeekCalendar';
+import WeekCalendar from '../../components/WeekCalendar';
 import { PersonalDashboardShell } from './PersonalDashboardShell';
 import type { DashboardPageProps } from './types';
-
-function parentWeekEvents(): CalendarEvent[] {
-  const d = new Date(); const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); d.setHours(0, 0, 0, 0);
-  const titles = ['Journée scolaire', 'Journée scolaire', 'Journée scolaire', 'Journée scolaire', 'Journée scolaire'];
-  return Array.from({ length: 5 }, (_, i) => {
-    const date = new Date(d); date.setDate(d.getDate() + i);
-    return { id: `par-d${i}`, title: titles[i], subtitle: 'Présences enfants', date, startMinutes: 7 * 60 + 30, endMinutes: 12 * 60 + 30, status: 'confirmed' as const };
-  });
-}
 
 export const ParentDashboard = (props: DashboardPageProps) => (
   <PersonalDashboardShell
@@ -35,8 +25,8 @@ export const ParentDashboard = (props: DashboardPageProps) => (
     ]}
     footer={
       <WeekCalendar
-        events={parentWeekEvents()}
-        onEventClick={() => props.navigate('/attendance')}
+        events={props.planningEvents}
+        onEventClick={() => props.navigate('/planning')}
       />
     }
   />

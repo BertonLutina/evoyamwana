@@ -1,17 +1,7 @@
 import { BookOpen, CalendarCheck, MessageSquare } from 'lucide-react';
-import WeekCalendar, { type CalendarEvent } from '../../components/WeekCalendar';
+import WeekCalendar from '../../components/WeekCalendar';
 import { PersonalDashboardShell } from './PersonalDashboardShell';
 import type { DashboardPageProps } from './types';
-
-function studentWeekEvents(): CalendarEvent[] {
-  const d = new Date(); const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); d.setHours(0, 0, 0, 0);
-  const titles = ['Cours du lundi', 'Cours du mardi', 'Cours du mercredi', 'Cours du jeudi', 'Cours du vendredi'];
-  return Array.from({ length: 5 }, (_, i) => {
-    const date = new Date(d); date.setDate(d.getDate() + i);
-    return { id: `stu-d${i}`, title: titles[i], subtitle: 'Espace élève', date, startMinutes: 7 * 60 + 30, endMinutes: 12 * 60 + 30, status: 'available' as const };
-  });
-}
 
 export const StudentDashboard = (props: DashboardPageProps) => (
   <PersonalDashboardShell
@@ -35,8 +25,8 @@ export const StudentDashboard = (props: DashboardPageProps) => (
     ]}
     footer={
       <WeekCalendar
-        events={studentWeekEvents()}
-        onEventClick={() => props.navigate('/grades')}
+        events={props.planningEvents}
+        onEventClick={() => props.navigate('/planning')}
       />
     }
   />
