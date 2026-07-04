@@ -1,6 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -196,6 +196,7 @@ model School {
   healthRecords  SchoolHealthRecord[]
   sectorDossiers SchoolSectorDossier[]
   directorReports SchoolDirectorReport[]
+  plannings      Planning[]
 
   @@index([country, city])
 }
@@ -348,6 +349,8 @@ model User {
   sentMessages     Message[]      @relation("SentMessages")
   receivedMessages Message[]      @relation("ReceivedMessages")
   notifications    Notification[]
+  createdPlannings Planning[]            @relation("PlanningCreator")
+  planningInvites  PlanningParticipant[]
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
@@ -919,4 +922,38 @@ model Notification {
   @@index([schoolId])
   @@index([userId])
   @@index([type])
+}
+
+model Planning {
+  id           String                @id @default(uuid()) @db.Uuid
+  schoolId     String                @db.Uuid
+  school       School                @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  creatorId    String                @db.Uuid
+  creator      User                  @relation("PlanningCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  location     String?
+  date         DateTime
+  startMinutes Int
+  endMinutes   Int
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  participants PlanningParticipant[]
+
+  @@index([schoolId, date])
+  @@index([creatorId])
+  @@map("plannings")
+}
+
+model PlanningParticipant {
+  id         String   @id @default(uuid()) @db.Uuid
+  planningId String   @db.Uuid
+  planning   Planning @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  userId     String   @db.Uuid
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([planningId, userId])
+  @@index([userId])
+  @@map("planning_participants")
 }
