@@ -1858,6 +1858,55 @@ export interface DashboardSummaryDto {
   }>;
 }
 
+export interface PlanningParticipantDto {
+  id: string;
+  userId: string;
+  user: {
+    id: string;
+    fullName: string;
+    email: string;
+    role: UserRole;
+  };
+}
+
+export interface PlanningDto {
+  id: string;
+  schoolId: string;
+  creatorId: string;
+  title: string;
+  description?: string | null;
+  location?: string | null;
+  date: string;
+  startMinutes: number;
+  endMinutes: number;
+  createdAt: string;
+  updatedAt: string;
+  creator: {
+    id: string;
+    fullName: string;
+    email: string;
+    role: UserRole;
+  };
+  participants: PlanningParticipantDto[];
+}
+
+export interface PlanningTargetDto {
+  id: string;
+  fullName: string;
+  email: string;
+  role: UserRole;
+}
+
+export interface PlanningPayload {
+  title: string;
+  description?: string | null;
+  location?: string | null;
+  date: string;
+  startMinutes: number;
+  endMinutes: number;
+  participantUserIds?: string[];
+}
+
 export interface ApiSuccessResponse<T> {
   success: true;
   data: T;
@@ -1895,5 +1944,6 @@ export const API_ROUTES = {
   sectorDossiers: '/sector-dossiers',
   directorReports: '/director-reports',
   staffUsers: '/staff-users',
-  dashboard: '/dashboard'
+  dashboard: '/dashboard',
+  planning: '/planning'
 } as const;
