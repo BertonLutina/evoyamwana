@@ -53,16 +53,23 @@ const initialForm: DirectorReportPayload = {
   dueDate: ''
 };
 
-export const DirectorReportsPage = () => {
+interface DirectorReportsPageProps {
+  fixedType?: DirectorReportType;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
+
+export const DirectorReportsPage = ({ fixedType, eyebrow, title, description }: DirectorReportsPageProps = {}) => {
   const [reports, setReports] = useState<DirectorReportDto[]>([]);
   const [summary, setSummary] = useState<DirectorReportSummaryDto>(emptySummary);
   const [search, setSearch] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState(fixedType ?? '');
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingReport, setEditingReport] = useState<DirectorReportDto | null>(null);
-  const [form, setForm] = useState<DirectorReportPayload>(initialForm);
+  const [form, setForm] = useState<DirectorReportPayload>(fixedType ? { ...initialForm, type: fixedType } : initialForm);
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
@@ -73,17 +80,17 @@ export const DirectorReportsPage = () => {
       const [list, nextSummary] = await Promise.all([
         directorReportsService.list({
           search,
-          type: type as DirectorReportType | undefined,
+          type: fixedType ?? ((type || undefined) as DirectorReportType | undefined),
           status: status as SchoolHealthStatus | undefined,
           page: 1,
           pageSize: 100
         }),
         directorReportsService.summary()
       ]);
-      setReports(list.reports);
+      setReports(fixedType ? list.reports.filter((report) => report.type === fixedType) : list.reports);
       setSummary(nextSummary);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les rapports direction.');
+      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les documents.');
     } finally {
       setIsLoading(false);
     }
@@ -113,14 +120,14 @@ export const DirectorReportsPage = () => {
       status: report.status,
       priority: report.priority,
       dueDate: report.dueDate ? report.dueDate.slice(0, 10) : ''
-    } : initialForm);
+    } : fixedType ? { ...initialForm, type: fixedType } : initialForm);
     setIsFormOpen(true);
   };
 
   const closeForm = () => {
     setIsFormOpen(false);
     setEditingReport(null);
-    setForm(initialForm);
+    setForm(fixedType ? { ...initialForm, type: fixedType } : initialForm);
   };
 
   const save = async () => {
@@ -157,10 +164,10 @@ export const DirectorReportsPage = () => {
         <section className="overflow-hidden rounded-lg border border-ocean/10 bg-white shadow-panel">
           <div className="grid gap-6 p-6 sm:p-8 xl:grid-cols-[1fr_360px] xl:items-center">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Synthèses direction</p>
-              <h2 className="mt-3 font-display text-4xl font-bold text-ink">Bibliothèque des rapports</h2>
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">{eyebrow ?? 'Synthèses direction'}</p>
+              <h2 className="mt-3 font-display text-4xl font-bold text-ink">{title ?? 'Bibliothèque des rapports'}</h2>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-ink/60">
-                Centralisez les documents de direction par période, type, responsable et état de publication. Cette page sert d’archive officielle, pas de registre d’alertes.
+                {description ?? 'Centralisez les documents de direction par période, type, responsable et état de publication. Cette page sert d’archive officielle, pas de registre d’alertes.'}
               </p>
             </div>
             <div className="rounded-lg border border-ocean/10 bg-[#071b3a] p-5 text-white">
@@ -227,10 +234,12 @@ export const DirectorReportsPage = () => {
               <Search size={18} className="text-ocean/55" />
               <input className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35" placeholder="Rechercher rapport, période, responsable" value={search} onChange={(event) => setSearch(event.target.value)} />
             </label>
-            <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={type} onChange={(event) => setType(event.target.value)}>
-              <option value="">Tous rapports</option>
-              {reportTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-            </select>
+            {fixedType ? null : (
+              <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={type} onChange={(event) => setType(event.target.value)}>
+                <option value="">Tous rapports</option>
+                {reportTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+              </select>
+            )}
             <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={status} onChange={(event) => setStatus(event.target.value)}>
               <option value="">Tous statuts</option>
               {statuses.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
@@ -300,12 +309,14 @@ export const DirectorReportsPage = () => {
                 </button>
               </div>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <label className="grid gap-2 text-sm font-bold text-ink">
-                  Type
-                  <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 font-semibold" value={form.type} onChange={(event) => setForm((current) => ({ ...current, type: event.target.value as DirectorReportType }))}>
-                    {reportTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-                  </select>
-                </label>
+                {fixedType ? null : (
+                  <label className="grid gap-2 text-sm font-bold text-ink">
+                    Type
+                    <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 font-semibold" value={form.type} onChange={(event) => setForm((current) => ({ ...current, type: event.target.value as DirectorReportType }))}>
+                      {reportTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+                    </select>
+                  </label>
+                )}
                 <label className="grid gap-2 text-sm font-bold text-ink">
                   Période
                   <input className="h-11 rounded-md border border-ocean/10 px-3 font-semibold outline-none focus:border-ocean" value={form.period} onChange={(event) => setForm((current) => ({ ...current, period: event.target.value }))} />

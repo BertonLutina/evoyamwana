@@ -51,16 +51,23 @@ const initialForm: SchoolHealthPayload = {
   dueDate: ''
 };
 
-export const DirectorSchoolHealthPage = () => {
+interface DirectorSchoolHealthPageProps {
+  fixedCategory?: SchoolHealthCategory;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
+
+export const DirectorSchoolHealthPage = ({ fixedCategory, eyebrow, title, description }: DirectorSchoolHealthPageProps = {}) => {
   const [records, setRecords] = useState<SchoolHealthRecordDto[]>([]);
   const [summary, setSummary] = useState(emptySummary);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(fixedCategory ?? '');
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<SchoolHealthRecordDto | null>(null);
-  const [form, setForm] = useState<SchoolHealthPayload>(initialForm);
+  const [form, setForm] = useState<SchoolHealthPayload>(fixedCategory ? { ...initialForm, category: fixedCategory } : initialForm);
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const hasHealthData = summary.totals.records > 0 && summary.score !== null;
@@ -72,17 +79,17 @@ export const DirectorSchoolHealthPage = () => {
       const [list, nextSummary] = await Promise.all([
         schoolHealthService.list({
           search,
-          category: category as SchoolHealthCategory | undefined,
+          category: fixedCategory ?? ((category || undefined) as SchoolHealthCategory | undefined),
           status: status as SchoolHealthStatus | undefined,
           page: 1,
           pageSize: 100
         }),
         schoolHealthService.summary()
       ]);
-      setRecords(list.records);
+      setRecords(fixedCategory ? list.records.filter((record) => record.category === fixedCategory) : list.records);
       setSummary(nextSummary);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger la santé de l’école.');
+      setError(loadError instanceof Error ? loadError.message : 'Impossible de charger les dossiers.');
     } finally {
       setIsLoading(false);
     }
@@ -107,14 +114,14 @@ export const DirectorSchoolHealthPage = () => {
       severity: record.severity,
       owner: record.owner ?? '',
       dueDate: record.dueDate ? record.dueDate.slice(0, 10) : ''
-    } : initialForm);
+    } : fixedCategory ? { ...initialForm, category: fixedCategory } : initialForm);
     setIsFormOpen(true);
   };
 
   const closeForm = () => {
     setIsFormOpen(false);
     setEditingRecord(null);
-    setForm(initialForm);
+    setForm(fixedCategory ? { ...initialForm, category: fixedCategory } : initialForm);
   };
 
   const save = async () => {
@@ -151,10 +158,10 @@ export const DirectorSchoolHealthPage = () => {
         <section className="overflow-hidden rounded-lg border border-ocean/10 bg-white shadow-panel">
           <div className="grid gap-6 p-6 sm:p-8 xl:grid-cols-[1fr_340px] xl:items-center">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">Pilotage santé école</p>
-              <h2 className="mt-3 font-display text-4xl font-bold text-ink">Santé de l’école</h2>
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-ember">{eyebrow ?? 'Pilotage santé école'}</p>
+              <h2 className="mt-3 font-display text-4xl font-bold text-ink">{title ?? 'Santé de l’école'}</h2>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-ink/60">
-                Suivez les alertes concrètes de l’école: présence, pédagogie, finances, infrastructures, sécurité, santé, réputation et conformité ministère.
+                {description ?? 'Suivez les alertes concrètes de l’école: présence, pédagogie, finances, infrastructures, sécurité, santé, réputation et conformité ministère.'}
               </p>
             </div>
             <div className="rounded-lg border border-ocean/10 bg-[#071b3a] p-5 text-white">
@@ -184,10 +191,12 @@ export const DirectorSchoolHealthPage = () => {
               <Search size={18} className="text-ocean/55" />
               <input className="w-full bg-transparent text-sm outline-none placeholder:text-ink/35" placeholder="Rechercher alerte, responsable ou dossier" value={search} onChange={(event) => setSearch(event.target.value)} />
             </label>
-            <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={category} onChange={(event) => setCategory(event.target.value)}>
-              <option value="">Toutes catégories</option>
-              {categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-            </select>
+            {fixedCategory ? null : (
+              <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={category} onChange={(event) => setCategory(event.target.value)}>
+                <option value="">Toutes catégories</option>
+                {categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+              </select>
+            )}
             <select className="h-11 rounded-md border border-ocean/10 bg-white px-3 text-sm font-semibold text-ink" value={status} onChange={(event) => setStatus(event.target.value)}>
               <option value="">Tous statuts</option>
               {statuses.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
@@ -274,9 +283,11 @@ export const DirectorSchoolHealthPage = () => {
               <input className="h-11 rounded-md border border-ocean/10 px-3 text-sm font-semibold outline-none focus:border-ocean" placeholder="Titre du dossier" value={form.title} onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))} />
               <textarea className="min-h-28 rounded-md border border-ocean/10 px-3 py-3 text-sm font-semibold outline-none focus:border-ocean" placeholder="Description, contexte et action attendue" value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} />
               <div className="grid gap-3 md:grid-cols-2">
-                <select className="h-11 rounded-md border border-ocean/10 px-3 text-sm font-semibold" value={form.category} onChange={(event) => setForm((current) => ({ ...current, category: event.target.value as SchoolHealthCategory }))}>
-                  {categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-                </select>
+                {fixedCategory ? null : (
+                  <select className="h-11 rounded-md border border-ocean/10 px-3 text-sm font-semibold" value={form.category} onChange={(event) => setForm((current) => ({ ...current, category: event.target.value as SchoolHealthCategory }))}>
+                    {categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+                  </select>
+                )}
                 <select className="h-11 rounded-md border border-ocean/10 px-3 text-sm font-semibold" value={form.severity} onChange={(event) => setForm((current) => ({ ...current, severity: event.target.value as SchoolHealthSeverity }))}>
                   {severities.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
                 </select>
