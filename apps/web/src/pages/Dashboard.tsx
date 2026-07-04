@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { DashboardSummaryDto } from '@evoyamwana/shared';
+import type { CalendarEvent } from '../components/WeekCalendar';
 import { useAuth } from '../hooks/useAuth';
 import { dashboardService } from '../services/dashboard.service';
+import { planningService } from '../services/planning.service';
 import { DirectorDashboard } from './dashboards/DirectorDashboard';
 import { ParentDashboard } from './dashboards/ParentDashboard';
 import { SchoolAdminDashboard } from './dashboards/SchoolAdminDashboard';
@@ -27,6 +29,7 @@ export const Dashboard = () => {
   const [summary, setSummary] = useState<DashboardSummaryDto>(emptySummary);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [planningEvents, setPlanningEvents] = useState<CalendarEvent[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -48,9 +51,35 @@ export const Dashboard = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+    planningService
+      .list()
+      .then((plannings) => {
+        if (!isMounted) return;
+        setPlanningEvents(
+          plannings.map((planning) => ({
+            id: planning.id,
+            title: planning.title,
+            subtitle: planning.location || undefined,
+            date: new Date(planning.date),
+            startMinutes: planning.startMinutes,
+            endMinutes: planning.endMinutes,
+            status: 'confirmed' as const
+          }))
+        );
+      })
+      .catch(() => {
+        if (isMounted) setPlanningEvents([]);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   if (!user) return null;
 
-  const props = { user, summary, isLoading, error, navigate };
+  const props = { user, summary, isLoading, error, navigate, planningEvents };
 
   switch (user.role) {
     case 'SUPER_ADMIN':
