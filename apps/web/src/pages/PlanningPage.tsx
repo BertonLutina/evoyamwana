@@ -254,7 +254,7 @@ export const PlanningPage = () => {
               <p className="mt-3 text-xs font-semibold text-ink/50">Créé par {selected.creator.fullName} · {roleLabels[selected.creator.role]}</p>
             </div>
 
-            {selected.creatorId === user?.id ? (
+            {selected.creatorId === user?.id || user?.role === 'SUPER_ADMIN' || user?.role === 'SCHOOL_ADMIN' ? (
               <div className="mt-5 flex justify-end gap-3">
                 <Button type="button" variant="secondary" className="gap-2" onClick={() => void removePlanning(selected)}>
                   <Trash2 size={16} />
