@@ -21,11 +21,18 @@ const ADMIN_ROLES: UserRole[] = ['SUPER_ADMIN', 'SCHOOL_ADMIN', 'DIRECTOR', 'SEC
 const STAFF_ROLES: UserRole[] = ['TEACHER', 'CLASS_TUTOR', 'ACCOUNTANT', 'LIBRARIAN', 'NURSE', 'TRANSPORT_MANAGER', 'CANTEEN_MANAGER', 'DISCIPLINE_OFFICER'];
 const SELF_ONLY_ROLES: UserRole[] = ['STUDENT', 'PARENT'];
 
+// Only super admin and school admin have blanket oversight (can see/manage everyone's plannings).
+// Directors/secretaries can create plannings for anyone, but cannot edit/delete plannings they didn't create.
+const MANAGER_ROLES: UserRole[] = ['SUPER_ADMIN', 'SCHOOL_ADMIN'];
+
 const canTargetRole = (creatorRole: UserRole, targetRole: UserRole): boolean => {
   if (ADMIN_ROLES.includes(creatorRole)) return true;
   if (STAFF_ROLES.includes(creatorRole)) return targetRole === 'STUDENT' || STAFF_ROLES.includes(targetRole) || ADMIN_ROLES.includes(targetRole);
   return false;
 };
+
+const canManage = (user: AuthUser, planning: { creatorId: string }): boolean =>
+  planning.creatorId === user.id || MANAGER_ROLES.includes(user.role);
 
 const requireSchoolId = (user: AuthUser) => {
   if (!user.schoolId) throw new AppError('School context is required', 403);
@@ -65,10 +72,9 @@ const validateParticipants = async (user: AuthUser, schoolId: string, participan
 export const planningService = {
   async list(user: AuthUser, query: PlanningQuery) {
     const schoolId = requireSchoolId(user);
-    const where: Record<string, unknown> = {
-      schoolId,
-      OR: [{ creatorId: user.id }, { participants: { some: { userId: user.id } } }]
-    };
+    const where: Record<string, unknown> = MANAGER_ROLES.includes(user.role)
+      ? { schoolId }
+      : { schoolId, OR: [{ creatorId: user.id }, { participants: { some: { userId: user.id } } }] };
 
     if (query.from || query.to) {
       const dateFilter: Record<string, Date> = {};
@@ -88,10 +94,10 @@ export const planningService = {
 
   async get(user: AuthUser, id: string) {
     const schoolId = requireSchoolId(user);
-    const planning = await prisma.planning.findFirst({
-      where: { id, schoolId, OR: [{ creatorId: user.id }, { participants: { some: { userId: user.id } } }] },
-      include: planningInclude
-    });
+    const where = MANAGER_ROLES.includes(user.role)
+      ? { id, schoolId }
+      : { id, schoolId, OR: [{ creatorId: user.id }, { participants: { some: { userId: user.id } } }] };
+    const planning = await prisma.planning.findFirst({ where, include: planningInclude });
     if (!planning) throw new AppError('Planning introuvable', 404);
     return planning;
   },
@@ -122,7 +128,7 @@ export const planningService = {
     const schoolId = requireSchoolId(user);
     const current = await prisma.planning.findFirst({ where: { id, schoolId } });
     if (!current) throw new AppError('Planning introuvable', 404);
-    if (current.creatorId !== user.id) throw new AppError('Seul le créateur peut modifier ce planning', 403);
+    if (!canManage(user, current)) throw new AppError('Seul le créateur, un administrateur ou un super administrateur peut modifier ce planning', 403);
 
     let participantsUpdate;
     if (input.participantUserIds) {
@@ -152,7 +158,7 @@ export const planningService = {
     const schoolId = requireSchoolId(user);
     const current = await prisma.planning.findFirst({ where: { id, schoolId } });
     if (!current) throw new AppError('Planning introuvable', 404);
-    if (current.creatorId !== user.id) throw new AppError('Seul le créateur peut supprimer ce planning', 403);
+    if (!canManage(user, current)) throw new AppError('Seul le créateur, un administrateur ou un super administrateur peut supprimer ce planning', 403);
     await prisma.planning.delete({ where: { id: current.id } });
     return { id: current.id };
   },
